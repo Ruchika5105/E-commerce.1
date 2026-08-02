@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-body bg-white text-gray-800 antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-heading font-semibold text-white bg-brand-green hover:bg-brand-green-dark transition-all duration-300 shadow-lg shadow-brand-green/20 hover:shadow-brand-green/40 hover:-translate-y-0.5;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-heading font-semibold text-brand-green-dark bg-brand-gold hover:bg-brand-gold-light transition-all duration-300 shadow-lg shadow-brand-gold/20 hover:shadow-brand-gold/40 hover:-translate-y-0.5;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-heading font-semibold border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-all duration-300;
+  }
+  .dark .btn-outline {
+    @apply border-brand-cream/40 text-brand-cream hover:bg-brand-cream hover:text-brand-green-dark;
+  }
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-brand-gold;
+  }
+  .section-title {
+    @apply font-heading font-bold text-3xl md:text-4xl lg:text-5xl text-brand-green dark:text-brand-cream leading-tight;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-brand-green/60 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-brand-green;
+}
+
+/* Image lazy loading fade */
+img {
+  @apply transition-opacity duration-500;
+}
+
+/* Legal pages */
+.prose-legal {
+  @apply text-gray-700 dark:text-gray-300 leading-relaxed space-y-4;
+}
+.prose-legal h2 {
+  @apply font-heading font-bold text-xl md:text-2xl text-brand-green dark:text-brand-cream mt-8 mb-2;
+}
+.prose-legal p {
+  @apply text-base leading-relaxed;
+}
+.prose-legal ul {
+  @apply list-disc pl-6 space-y-1.5;
+}
+.prose-legal a {
+  @apply text-brand-green dark:text-brand-gold font-medium hover:underline;
+}
+.prose-legal strong {
+  @apply text-gray-800 dark:text-gray-200 font-semibold;
+}
