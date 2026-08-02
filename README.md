@@ -80,3 +80,9 @@ K.Gaureeha Food Industry (OPC) Private Limited
 ## Notes
 
 This project is configured for a business website with Supabase-based admin functionality. Make sure your Supabase project has the required tables and environment variables configured before running the app.
+
+## Deployment
+
+This repository is configured for GitHub Pages deployment via GitHub Actions. The production site will be published from the generated `dist/` folder and should be available at:
+
+`https://Ruchika5105.github.io/E-commerce.1/`
