@@ -6,7 +6,7 @@ interface BrandLogoProps {
 export default function BrandLogo({ size = 64, className }: BrandLogoProps) {
   return (
     <img
-      src="/image.png"
+      src={`${import.meta.env.BASE_URL}image.png`}
       alt="K.Gaureeha Food Industry Logo"
       width={size}
       height={size}

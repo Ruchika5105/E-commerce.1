@@ -18,6 +18,7 @@ import Feedback from '@/sections/Feedback';
 import Contact from '@/sections/Contact';
 import Footer from '@/sections/Footer';
 import AdminLogin from '@/pages/AdminLogin';
+import AdminPasswordReset from '@/pages/AdminPasswordReset';
 import AdminDashboard from '@/pages/AdminDashboard';
 import AdminDenied from '@/pages/AdminDenied';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
@@ -50,11 +51,13 @@ function AppRoutes() {
   }, []);
 
   const isAdmin = route.startsWith('#/admin');
+  const resetPath = `${import.meta.env.BASE_URL}admin/reset-password`;
+  const isPasswordReset = window.location.pathname === resetPath || route.startsWith('#/admin/reset-password');
 
-  if (isAdmin) {
+  if (isAdmin || isPasswordReset) {
     return (
       <AuthProvider>
-        <AdminRoute />
+        {isPasswordReset ? <AdminPasswordReset /> : <AdminRoute />}
       </AuthProvider>
     );
   }
