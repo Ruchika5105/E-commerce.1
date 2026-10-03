@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Building2, User, Hash, AlertCircle, Loader2 } from 'lucide-react';
 import Reveal from '@/components/Reveal';
 import { company } from '@/data/site';
-import { supabase } from '@/lib/supabase';
+import { api } from '@/lib/api';
 
 export default function Contact() {
   type Status = 'idle' | 'submitting' | 'success' | 'error';
@@ -16,14 +16,14 @@ export default function Contact() {
     setStatus('submitting');
     setErrorMsg('');
 
-    const { error } = await supabase.from('enquiries').insert({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim() || null,
-      message: form.message.trim(),
-    });
-
-    if (error) {
+    try {
+      await api.post('enquiries', {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        message: form.message.trim(),
+      });
+    } catch {
       setStatus('error');
       setErrorMsg('Something went wrong. Please try again or WhatsApp us directly.');
       return;

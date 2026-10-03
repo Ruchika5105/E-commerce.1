@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
+import { api } from '@/lib/api';
 
 const CATEGORIES = ['All', 'Factory', 'Processing', 'Products', 'Packaging', 'Machinery'];
 
@@ -19,14 +19,11 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from('gallery')
-      .select('id, src, alt, category')
-      .order('sort_order', { ascending: true })
-      .then(({ data }) => {
-        if (data) setImages(data);
-        setLoading(false);
-      });
+    api
+      .get<GalleryItem[]>('gallery')
+      .then(setImages)
+      .catch(() => setImages([]))
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = active === 'All' ? images : images.filter((g) => g.category === active);

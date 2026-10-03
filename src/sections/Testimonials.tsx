@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Quote, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
+import { api } from '@/lib/api';
 
 interface FeedbackEntry {
   id: string;
@@ -18,16 +18,11 @@ export default function Testimonials() {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    supabase
-      .from('feedback')
-      .select('id, name, rating, message, created_at')
-      .eq('approved', true)
-      .order('created_at', { ascending: false })
-      .limit(10)
-      .then(({ data }) => {
-        if (data) setTestimonials(data);
-        setLoading(false);
-      });
+    api
+      .get<FeedbackEntry[]>('feedback?limit=10')
+      .then(setTestimonials)
+      .catch(() => setTestimonials([]))
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
