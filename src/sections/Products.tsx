@@ -1,7 +1,7 @@
 import { CheckCircle2, ArrowRight, FileText, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
+import { api } from '@/lib/api';
 
 interface Product {
   id: string;
@@ -16,14 +16,11 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from('products')
-      .select('id, name, description, image, badge')
-      .order('sort_order', { ascending: true })
-      .then(({ data }) => {
-        if (data) setProducts(data);
-        setLoading(false);
-      });
+    api
+      .get<Product[]>('products')
+      .then(setProducts)
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleQuote = (productName: string) => {

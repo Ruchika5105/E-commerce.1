@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Send, CheckCircle2, AlertCircle, Loader2, MessageSquare } from 'lucide-react';
 import Reveal from '@/components/Reveal';
-import { supabase } from '@/lib/supabase';
+import { api } from '@/lib/api';
 
 interface FeedbackEntry {
   id: string;
@@ -22,13 +22,11 @@ export default function Feedback() {
   const [approved, setApproved] = useState<FeedbackEntry[]>([]);
 
   const loadApproved = useCallback(async () => {
-    const { data } = await supabase
-      .from('feedback')
-      .select('id, name, rating, message, created_at')
-      .eq('approved', true)
-      .order('created_at', { ascending: false })
-      .limit(6);
-    if (data) setApproved(data);
+    try {
+      setApproved(await api.get<FeedbackEntry[]>('feedback?limit=6'));
+    } catch {
+      setApproved([]);
+    }
   }, []);
 
   useEffect(() => {
@@ -40,14 +38,14 @@ export default function Feedback() {
     setStatus('submitting');
     setErrorMsg('');
 
-    const { error } = await supabase.from('feedback').insert({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      rating,
-      message: form.message.trim(),
-    });
-
-    if (error) {
+    try {
+      await api.post('feedback', {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        rating,
+        message: form.message.trim(),
+      });
+    } catch {
       setStatus('error');
       setErrorMsg('Something went wrong. Please try again.');
       return;
